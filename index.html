@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moodify - Music for your Mood</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(
+                45deg,
+                #FF61D8 0%,
+                #6B5DFF 50%,
+                #00FFE1 100%
+            );
+            background-size: 200% 200%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .neon-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(107, 93, 255, 0.5);
+        }
+
+        .neon-button:hover {
+            box-shadow: 0 0 30px rgba(107, 93, 255, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .camera-container {
+            max-width: 800px;
+            max-height: 600px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .emotion-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="hero-gradient min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="text-center mb-12 floating">
+            <h1 class="text-6xl font-bold text-white mb-4 tracking-wider">Moodify</h1>
+            <p class="text-2xl text-white opacity-90">Where Emotions Meet Music ✨</p>
+        </div>
+
+        <div class="glass-effect rounded-3xl shadow-2xl p-8 max-w-4xl mx-auto">
+            <div id="welcome-screen" class="text-center py-12">
+                <h2 class="text-4xl font-bold text-white mb-6">Ready to Feel the Music?</h2>
+                <p class="text-xl text-white opacity-80 mb-12">Let your expressions guide your musical journey</p>
+                <button id="startButton" class="neon-button bg-gradient-to-r from-blue-400 to-purple-500 text-white px-12 py-4 rounded-full text-lg font-semibold transform hover:scale-105 transition duration-300">
+                    Start Your Journey 🎵
+                </button>
+            </div>
+
+            <div id="camera-screen" class="hidden">
+                <div class="relative">
+                    <div class="camera-container mb-8">
+                        <img id="video_feed" src="" alt="Camera Feed" class="w-full">
+                    </div>
+                    <div class="text-center mt-8">
+                        <button id="stopButton" class="neon-button bg-gradient-to-r from-red-500 to-pink-500 text-white px-10 py-3 rounded-full text-lg font-semibold transform hover:scale-105 transition duration-300">
+                            Stop Camera 🎬
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <p class="text-white opacity-70 text-sm">Made with 💖 by Moodify Team</p>
+        </div>
+    </div>
+
+    <script>
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const cameraScreen = document.getElementById('camera-screen');
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const videoFeed = document.getElementById('video_feed');
+
+        startButton.addEventListener('click', () => {
+            welcomeScreen.classList.add('hidden');
+            cameraScreen.classList.remove('hidden');
+            videoFeed.src = '/video_feed';
+        });
+
+        stopButton.addEventListener('click', async () => {
+            await fetch('/stop_camera');
+            welcomeScreen.classList.remove('hidden');
+            cameraScreen.classList.add('hidden');
+            videoFeed.src = '';
+        });
+    </script>
+</body>
+</html>
